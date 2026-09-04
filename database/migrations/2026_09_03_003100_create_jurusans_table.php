@@ -13,10 +13,9 @@ return new class extends Migration
 {
     Schema::create('jurusans', function (Blueprint $table) {
         $table->id();
-        $table->string('nama_jurusan'); // Contoh: PPLG, TJKT
-        $table->string('kode_singkat'); // Contoh: PPLG
-        $table->text('deskripsi');     // Keterangan jurusan
-        $table->string('ikon')->nullable(); // Nama icon bootstrap / gambar
+        $table->string('logo')->nullable(); // Menampung path gambar logo
+        $table->string('nama_jurusan');
+        $table->text('deskripsi')->nullable();
         $table->timestamps();
     });
 }

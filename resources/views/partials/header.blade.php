@@ -23,12 +23,14 @@
                 <li class="nav-item">
                     <a href="#jurusan" class="nav-link text-secondary">Jurusan</a>
                 </li>
+        
+                    <a href="#galeri" class="nav-link text-secondary">Galeri</a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('home') }}#artikel" class="nav-link text-secondary">Artikel</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#galeri" class="nav-link text-secondary">Galeri</a>
-                </li>
+                
                 <li class="nav-item">
                     <a href="#kontak" class="nav-link text-secondary">Kontak</a>
                 </li>

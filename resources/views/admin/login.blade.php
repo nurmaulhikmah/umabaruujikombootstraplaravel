@@ -32,23 +32,18 @@
                     @endif
 
                     <!-- Form Login -->
-                    <form action="{{ route('admin.login') ?? url('/admin/login') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="bi bi-person text-muted"></i></span>
-                                <input type="email" name="email" class="form-control bg-light border-start-0 rounded-end-3 py-2" >
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label small fw-semibold text-secondary">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="bi bi-key text-muted"></i></span>
-                                <input type="password" name="password" class="form-control bg-light border-start-0 rounded-end-3 py-2" >
-                            </div>
-                        </div>
+                    <form action="{{ route('admin.login') }}" method="POST">
+                    @csrf <!-- INI WAJIB ADA SUPAYA TIDAK ERROR 419 -->
+                    
+                    <!-- Input email dan password kamu di sini -->
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
 
                         <button type="submit" class="btn btn-primary w-100 rounded-pill fw-semibold py-2 shadow-sm" style="background-color: #11326d; border: none;">
                             Masuk ke Dashboard <i class="bi bi-arrow-right ms-1"></i>
