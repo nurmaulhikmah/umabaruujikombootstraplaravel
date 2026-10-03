@@ -14,16 +14,14 @@
             <div class="col-md-5 col-lg-4">
                 <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white">
                     
-                    <!-- Header Logo / Judul -->
                     <div class="text-center mb-4">
-                        <div class="mb-3 mx-auto text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #11326d;">
-                            <i class="bi bi-shield-lock-fill fs-4"></i>
+                        <div class="mb-3 mx-auto text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #ffffff;">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo SMKN 4 Bogor" style="width: 48px; height: 48px; object-fit: contain;">
                         </div>
-                        <h4 class="fw-bold text-dark mb-1">Admin Panel</h4>
+                        <h4 class="fw-bold text-dark mb-1">Admin Login</h4>
                         <p class="text-secondary small">SMK Negeri 4 Bogor</p>
                     </div>
 
-                    <!-- Notifikasi Error Login (Jika ada) -->
                     @if($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show small rounded-3 py-2" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ $errors->first() }}
@@ -31,11 +29,9 @@
                         </div>
                     @endif
 
-                    <!-- Form Login -->
                     <form action="{{ route('admin.login') }}" method="POST">
-                    @csrf <!-- INI WAJIB ADA SUPAYA TIDAK ERROR 419 -->
+                    @csrf
                     
-                    <!-- Input email dan password kamu di sini -->
                     <div class="mb-3">
                         <label>Email</label>
                         <input type="email" name="email" class="form-control" required>
@@ -50,10 +46,9 @@
                         </button>
                     </form>
 
-                    <!-- Tombol Kembali ke Website Utama -->
                     <div class="text-center mt-4">
                         <a href="{{ route('home') }}" class="text-decoration-none small text-muted">
-                            <i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda Website
+                            <i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda
                         </a>
                     </div>
 

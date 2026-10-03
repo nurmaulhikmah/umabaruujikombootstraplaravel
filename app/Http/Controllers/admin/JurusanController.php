@@ -23,55 +23,53 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'logo'         => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nama_jurusan' => 'required|string|max:255',
-            'deskripsi'    => 'nullable|string',
+            'deskripsi' => 'nullable|string',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $logoPath = null;
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('jurusan-logos', 'public');
-        }
+        $logoPath = $request->file('logo')->store('jurusan', 'public');
 
         Jurusan::create([
-            'logo'         => $logoPath,
             'nama_jurusan' => $request->nama_jurusan,
-            'deskripsi'    => $request->deskripsi,
+            'deskripsi' => $request->deskripsi,
+            'logo' => $logoPath,
         ]);
 
-        return redirect()->route('admin.jurusan.index')->with('success', 'Data jurusan berhasil ditambahkan!');
+        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil ditambahkan!');
     }
 
-    // TAMBAHKAN FUNGSI EDIT INI
-    public function edit(Jurusan $jurusan)
+    public function edit($id)
     {
+        $jurusan = Jurusan::findOrFail($id);
         return view('admin.jurusan.edit', compact('jurusan'));
     }
 
-    // TAMBAHKAN FUNGSI UPDATE INI
-    public function update(Request $request, Jurusan $jurusan)
+    public function update(Request $request, $id)
     {
+        $jurusan = Jurusan::findOrFail($id);
+
         $request->validate([
-            'logo'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nama_jurusan' => 'required|string|max:255',
-            'deskripsi'    => 'nullable|string',
+            'deskripsi' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $logoPath = $jurusan->logo;
+        $data = [
+            'nama_jurusan' => $request->nama_jurusan,
+            'deskripsi' => $request->deskripsi,
+        ];
+
         if ($request->hasFile('logo')) {
             if ($jurusan->logo && Storage::disk('public')->exists($jurusan->logo)) {
                 Storage::disk('public')->delete($jurusan->logo);
             }
-            $logoPath = $request->file('logo')->store('jurusan-logos', 'public');
+            $data['logo'] = $request->file('logo')->store('jurusan', 'public');
         }
 
-        $jurusan->update([
-            'logo'         => $logoPath,
-            'nama_jurusan' => $request->nama_jurusan,
-            'deskripsi'    => $request->deskripsi,
-        ]);
+        $jurusan->update($data);
 
-        return redirect()->route('admin.jurusan.index')->with('success', 'Data jurusan berhasil diperbarui!');
+        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil diperbarui!');
     }
 
     public function destroy(Jurusan $jurusan)

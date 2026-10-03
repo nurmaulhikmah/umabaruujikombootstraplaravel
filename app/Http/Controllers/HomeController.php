@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Models\Gallery;
+use App\Models\Berita;
+use App\Models\Galeri; 
+use App\Models\Jurusan;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $latestPosts = Post::latest()->take(3)->get();
-        $galleries = Gallery::latest()->take(6)->get();
+        $latestBeritas = Berita::latest()->take(3)->get();
+        $galleries   = Galeri::latest()->take(6)->get(); 
+        $jurusans    = Jurusan::all();
         
-        return view('home', compact('latestPosts', 'galleries'));
+        return view('home', compact('latestBeritas', 'galleries', 'jurusans'));
     }
 }

@@ -9,10 +9,9 @@
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
-    <!-- Header & Navbar Utama -->
     @include('partials.header')
 
-    <!-- Konten Detail Tentang Kami -->
+
     <div class="container py-5 flex-grow-1">
         <!-- Tombol Kembali -->
         <div class="mb-4">
@@ -23,7 +22,6 @@
         
         <h1 class="fw-bold mb-4" style="color: #11326d;">Profil & Perkembangan Sekolah</h1>
         
-        <!-- 1. Bagian Profil Sekolah (Yang sudah ada) -->
         <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 rounded-4">
             <h3 class="fw-bold mb-4" style="color: #11326d;">Tentang SMK Negeri 4 Bogor</h3>
             <p class="text-secondary lh-lg mb-3">
@@ -37,7 +35,6 @@
             </p>
         </div>
 
-        <!-- 2. Bagian Sejarah Sekolah (Baru Ditambahkan) -->
         <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 rounded-4">
             <h3 class="fw-bold mb-4" style="color: #11326d;">Sejarah Singkat SMK Negeri 4 Bogor</h3>
             <p class="text-secondary lh-lg mb-3">
@@ -48,7 +45,6 @@
             </p>
         </div>
 
-        <!-- 3. Bagian Visi & Misi (Baru Ditambahkan) -->
         <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 rounded-4">
             <h3 class="fw-bold mb-4" style="color: #11326d;">Visi & Misi</h3>
             
@@ -68,7 +64,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     @include('partials.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

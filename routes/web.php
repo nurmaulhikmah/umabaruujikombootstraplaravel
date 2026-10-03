@@ -3,42 +3,36 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Jurusan;
 use App\Models\Galeri;
+use App\Models\Berita; 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController; 
 use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\BeritaController; 
+use App\Http\Controllers\Admin\MessageController; 
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
-// ==========================================
-// 1. HALAMAN PUBLIK (FRONTEND)
-// ==========================================
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Route Beranda (Home) - Menampilkan Jurusan dan Galeri secara dinamis
-Route::get('/', function () {
-    $jurusans = Jurusan::all();
-    $galeris  = Galeri::latest()->take(6)->get();
-    
-    return view('home', compact('jurusans', 'galeris'));
-})->name('home');
-
-// Route Halaman Galeri Publik
 Route::get('/galeri', function () {
     $galeris = Galeri::latest()->get();
     return view('galeri', compact('galeris'));
-})->name('galeri');
+})->name('galeri.index');
 
-// Route Halaman Lainnya (Sesuaikan dengan file view yang ada)
 Route::get('/jurusan', function () {
     $jurusans = Jurusan::all();
     return view('jurusan', compact('jurusans')); 
 })->name('jurusan');
 
-Route::get('/artikel', function () {
-    return view('artikel'); 
-})->name('artikel');
+Route::get('/berita', function () {
+    $beritas = Berita::latest()->get();
+    return view('berita', compact('beritas')); 
+})->name('berita');
+
+Route::get('/berita/{id}', function ($id) {
+    $berita = Berita::findOrFail($id);
+    return view('berita-detail', compact('berita'));
+})->name('berita.detail');
 
 Route::get('/tentang-kami', function () {
     return view('tentang'); 
@@ -48,35 +42,46 @@ Route::get('/kontak', function () {
     return view('kontak'); 
 })->name('kontak');
 
+Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
 
-// ==========================================
-// 2. HALAMAN AUTH ADMIN (LOGIN)
-// ==========================================
 
-// Rute untuk menampilkan halaman login admin yang dipanggil oleh header/frontend
 Route::get('/admin/login', function () {
-    return view('admin.auth.login'); // Pastikan file view ini ada (resources/views/admin/auth/login.blade.php)
+    return view('admin.login'); 
+})->name('admin.login');
+
+Route::post('/admin/login', function (\Illuminate\Http\Request $request) {
+    $credentials = $request->only('email', 'password');
+
+    if (\Illuminate\Support\Facades\Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->route('admin.dashboard');
+    }
+
+    return back()->withErrors([
+        'email' => 'Email atau password yang Anda masukkan salah.',
+    ])->withInput();
 })->name('admin.login');
 
 
-// ==========================================
-// 3. HALAMAN ADMIN (BACKEND / CRUD)
-// ==========================================
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     
-    // Rute Dashboard
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Rute Logout Admin
     Route::post('/logout', function () {
         auth()->logout();
         return redirect()->route('admin.login');
     })->name('logout');
 
-    // Rute CRUD Galeri & Jurusan
     Route::resource('galeri', GaleriController::class);
     Route::resource('jurusan', JurusanController::class);
+    Route::resource('berita', BeritaController::class);
+
+    Route::get('/kontak', [MessageController::class, 'index'])->name('kontak.index');
+    Route::post('/kontak/{id}/reply', [MessageController::class, 'reply'])->name('kontak.reply'); 
+    Route::delete('/kontak/{id}', [MessageController::class, 'destroy'])->name('kontak.destroy');
+    Route::patch('/kontak/{id}/toggle-read', [MessageController::class, 'toggleRead'])->name('kontak.toggleRead');
 });

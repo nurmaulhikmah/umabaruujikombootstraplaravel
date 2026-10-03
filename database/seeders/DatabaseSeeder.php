@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Membuat akun admin otomatis
         User::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [

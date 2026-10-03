@@ -11,10 +11,8 @@
 </head>
 <body class="bg-light">
 
-    <!-- Header Minimalis (Logo Sekolah & Tombol Kembali ke Beranda) -->
     <nav class="bg-white border-bottom shadow-sm py-3 px-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-            <!-- Logo & Nama Sekolah -->
             <div class="d-flex align-items-center gap-2">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40">
                 <div>
@@ -23,7 +21,6 @@
                 </div>
             </div>
 
-            <!-- Tombol Kembali ke Beranda -->
             <div>
                 <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold text-dark text-decoration-none d-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left"></i> Kembali ke Beranda
@@ -32,16 +29,12 @@
         </div>
     </nav>
 
-    <!-- Konten Utama Profil / Sambutan Kepala Sekolah -->
     <div class="container py-5">
-        
-        <!-- Judul Halaman -->
         <div class="mb-5">
             <h1 class="fw-bold display-5" style="color: #11326d;">Profil Sekolah</h1>
             <p class="text-muted">Mengenal lebih dekat visi, misi, dan sambutan pimpinan SMK Negeri 4 Bogor.</p>
         </div>
 
-        <!-- Bagian Sambutan Kepala Sekolah -->
         <div class="row align-items-center mb-5 bg-white p-4 p-lg-5 rounded-4 shadow-sm">
             <div class="col-lg-4 mb-4 mb-lg-0 text-center">
                 <div class="bg-light rounded-4 d-flex align-items-center justify-content-center border" style="height: 320px;">
@@ -59,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Bagian Informasi Tambahan (Profil Singkat & Fasilitas) -->
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">

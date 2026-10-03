@@ -8,7 +8,7 @@
                     Membekali siswa dengan keterampilan dan karakter untuk siap kerja maupun melanjutkan pendidikan.
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
-                    <!-- Pastikan arah link tombol ini lari ke route /tentang -->
+                    
                     <a href="{{ route('tentang.kami') }}" class="btn btn-light rounded-pill px-4 py-3 fw-semibold text-dark shadow-sm">
                         Lihat Profil Sekolah
                     </a>

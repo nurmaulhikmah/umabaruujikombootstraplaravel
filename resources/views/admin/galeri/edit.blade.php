@@ -1,188 +1,64 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Galeri - SMK Negeri 4 Bogor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background-color: #001E6B; }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            transition: all 0.3s;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        .upload-box {
-            border: 2px dashed #ced4da;
-            background-color: #fdfdfd;
-            border-radius: 12px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .upload-box:hover {
-            border-color: #001E6B;
-            background-color: #f8f9fa;
-        }
-        .preview-img {
-            width: 120px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.admin')
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar d-flex flex-column justify-content-between p-4 shadow-sm">
-                <div>
-                    <div class="d-flex align-items-center mb-4 text-white">
-                        <div>
-                            <h6 class="fw-bold mb-0">SMK NEGERI 4</h6>
-                            <small class="text-white-50" style="font-size: 11px;">BOGOR</small>
-                        </div>
-                    </div>
-
-                    <span class="text-white-50 small text-uppercase fw-bold px-3 mb-2 d-block">Utama</span>
-                    
-                    <ul class="nav flex-column mb-auto">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                                <i class="bi bi-house-door me-2"></i> Beranda
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.galeri.index') }}" class="nav-link active">
-                                <i class="bi bi-images me-2"></i> Galeri
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="bi bi-grid me-2"></i> Jurusan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="bi bi-newspaper me-2"></i> Artikel
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="bi bi-chat-dots me-2"></i> Pesan
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="pt-3 border-top border-secondary">
-                    <form action="{{ route('admin.logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-light w-100 rounded-pill py-2 fw-semibold">
-                            Keluar
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Konten Utama Form Edit -->
-            <div class="col-md-9 col-lg-10 p-5">
-                <!-- Header Judul & Tombol Kembali -->
-                <div class="d-flex align-items-center mb-4">
-                    <a href="{{ route('admin.galeri.index') }}" class="text-dark fs-4 text-decoration-none me-3">
-                        <i class="bi bi-arrow-left"></i>
-                    </a>
-                    <h2 class="fw-bold text-dark mb-0">Edit Galeri</h2>
-                </div>
-
-                @if ($errors->any())
-                    <div class="alert alert-danger rounded-4 mb-4">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <!-- Form Card Edit -->
-                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                    <form action="{{ route('admin.galeri.update', $galeri->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Pratinjau Gambar Saat Ini -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-dark">Foto Saat Ini</label>
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $galeri->gambar) }}" alt="{{ $galeri->judul }}" class="preview-img shadow-sm border">
-                            </div>
-                        </div>
-
-                        <!-- Kotak Unggah Foto Baru (Opsional) -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-dark">Ganti Foto (Opsional)</label>
-                            <div class="upload-box p-4 text-center position-relative">
-                                <input type="file" name="gambar" id="fileInput" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;">
-                                <div class="text-secondary mb-1" style="font-size: 30px;" id="uploadIcon">
-                                    <i class="bi bi-cloud-arrow-up"></i>
-                                </div>
-                                <p class="fw-semibold text-dark mb-1" id="uploadText">Klik untuk mengganti foto atau biarkan kosong</p>
-                                <small class="text-muted" id="uploadSubText">Format JPG/PNG, maks 5MB</small>
-                            </div>
-                        </div>
-
-                        <!-- Input Judul -->
-                        <div class="mb-4">
-                            <label for="judul" class="form-label fw-bold text-dark">Judul</label>
-                            <input type="text" class="form-control rounded-3 py-2 bg-light border-0" id="judul" name="judul" value="{{ old('judul', $galeri->judul) }}" required>
-                        </div>
-
-                        <!-- Input Deskripsi -->
-                        <div class="mb-4">
-                            <label for="deskripsi" class="form-label fw-bold text-dark">Deskripsi</label>
-                            <textarea class="form-control rounded-3 bg-light border-0" id="deskripsi" name="deskripsi" rows="4">{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
-                        </div>
-
-                        <!-- Tombol Aksi (Batal & Simpan Perubahan) -->
-                        <div class="d-flex justify-content-end align-items-center gap-3">
-                            <a href="{{ route('admin.galeri.index') }}" class="text-secondary text-decoration-none fw-semibold">Batal</a>
-                            <button type="submit" class="btn text-white rounded-pill px-4 py-2" style="background-color: #001E6B;">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
+@section('content')
+<div class="container-fluid px-4">
+   
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ route('admin.galeri.index') }}" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center me-3" style="width: 42px; height: 42px;">
+            <i class="bi bi-arrow-left fs-5 text-dark"></i>
+        </a>
+        <h2 class="fw-bold text-dark mb-0">Edit Galeri</h2>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Script ganti teks box kalau file baru dipilih
-        const fileInput = document.getElementById('fileInput');
-        const uploadText = document.getElementById('uploadText');
-        const uploadSubText = document.getElementById('uploadSubText');
-        const uploadIcon = document.getElementById('uploadIcon');
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <form action="{{ route('admin.galeri.update', $galeri->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-        fileInput.addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                const fileName = e.target.files[0].name;
-                uploadText.textContent = "File baru dipilih: " + fileName;
-                uploadSubText.textContent = "Klik untuk mengganti ulang";
-                uploadIcon.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i>';
-            }
-        });
-    </script>
-</body>
-</html>
+            <div class="mb-3">
+                <label for="judul" class="form-label fw-semibold">Judul Kegiatan</label>
+                <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ old('judul', $galeri->judul) }}" placeholder="Masukkan judul kegiatan..." required>
+                @error('judul')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label fw-semibold">Deskripsi (Opsional)</label>
+                <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="3" placeholder="Tulis deskripsi kegiatan...">{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
+                @error('deskripsi')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold d-block">Foto Saat Ini</label>
+                @if($galeri->gambar)
+                    <img src="{{ asset('storage/' . $galeri->gambar) }}" alt="Preview" class="rounded shadow-sm mb-2" style="max-width: 150px; height: auto; object-fit: cover;">
+                @else
+                    <p class="text-muted small mb-0">Tidak ada foto.</p>
+                @endif
+            </div>
+
+            <div class="mb-4">
+                <label for="gambar" class="form-label fw-semibold">Ganti Foto (Opsional)</label>
+                <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar">
+                <small class="text-muted d-block mt-1">Format: JPG, PNG, JPEG (Maks. 2MB)</small>
+                @error('gambar')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+          
+            <div class="d-flex align-items-center gap-2">
+                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold">
+                    Perbarui Galeri
+                </button>
+                <a href="{{ route('admin.galeri.index') }}" class="btn btn-light rounded-pill px-4 fw-semibold text-dark">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

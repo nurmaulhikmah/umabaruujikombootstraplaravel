@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Galeri;
 use Illuminate\Http\Request;
+use App\Models\Galeri;
 use Illuminate\Support\Facades\Storage;
 
 class GaleriController extends Controller
@@ -23,17 +23,17 @@ class GaleriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gambar'    => 'required|image|mimes:jpeg,png,jpg|max:5120',
-            'judul'     => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $path = $request->file('gambar')->store('galeri', 'public');
+        $gambarPath = $request->file('gambar')->store('galeri', 'public');
 
         Galeri::create([
-            'gambar'    => $path,
-            'judul'     => $request->judul,
+            'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
+            'gambar' => $gambarPath,
         ]);
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil ditambahkan!');
@@ -50,39 +50,39 @@ class GaleriController extends Controller
         $galeri = Galeri::findOrFail($id);
 
         $request->validate([
-            'gambar'    => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
-            'judul'     => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Cek apakah ada file gambar baru yang diunggah
+        $data = [
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+        ];
+
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada di storage
+    
             if ($galeri->gambar && Storage::disk('public')->exists($galeri->gambar)) {
                 Storage::disk('public')->delete($galeri->gambar);
             }
-            // Simpan gambar baru
-            $path = $request->file('gambar')->store('galeri', 'public');
-        } else {
-            // Jika tidak ada gambar baru, gunakan gambar lama
-            $path = $galeri->gambar;
+        
+            $data['gambar'] = $request->file('gambar')->store('galeri', 'public');
         }
 
-        $galeri->update([
-            'gambar'    => $path,
-            'judul'     => $request->judul,
-            'deskripsi' => $request->deskripsi,
-        ]);
+        $galeri->update($data);
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil diperbarui!');
     }
 
+    
     public function destroy($id)
     {
         $galeri = Galeri::findOrFail($id);
-        if ($galeri->gambar) {
+
+        if ($galeri->gambar && Storage::disk('public')->exists($galeri->gambar)) {
             Storage::disk('public')->delete($galeri->gambar);
         }
+
         $galeri->delete();
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil dihapus!');
