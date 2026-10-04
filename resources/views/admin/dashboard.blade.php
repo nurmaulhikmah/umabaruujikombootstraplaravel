@@ -37,5 +37,18 @@
             <span class="text-muted small">Berita</span>
         </div>
     </div>
+
+    
+    <div class="col-sm-6 col-xl-3">
+        <a href="{{ route('admin.rating.index') }}" class="text-decoration-none">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white border-start border-warning border-4">
+                <i class="bi bi-star-fill fs-3 text-warning mb-3"></i>
+                <h3 class="fw-bold text-dark mb-1">
+                    ⭐ {{ number_format(\App\Models\WebsiteRating::avg('rating') ?? 0, 1) }}
+                </h3>
+                <span class="text-muted small">Rating Website ({{ \App\Models\WebsiteRating::count() }} Ulasan)</span>
+            </div>
+        </a>
+    </div>
 </div>
 @endsection

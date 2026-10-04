@@ -257,6 +257,50 @@
                 </form>
             </div>
         </div>
+
+
+
+        <div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h4 class="fw-bold text-center mb-2">Beri Penilaian untuk Website Ini</h4>
+                <p class="text-muted text-center small mb-4">Bantu kami meningkatkan kualitas layanan informasi digital SMK Negeri 4 Bogor.</p>
+
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <form action="{{ route('rating.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nama (Opsional)</label>
+                        <input type="text" name="nama" class="form-control" placeholder="Nama Anda...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Seberapa puas Anda dengan website ini?</label>
+                        <select name="rating" class="form-select" required>
+                            <option value="5">⭐⭐⭐⭐⭐ - Sangat Memuaskan</option>
+                            <option value="4">⭐⭐⭐⭐ - Memuaskan</option>
+                            <option value="3">⭐⭐⭐ - Cukup</option>
+                            <option value="2">⭐⭐ - Kurang</option>
+                            <option value="1">⭐ - Sangat Kurang</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Kritik & Saran</label>
+                        <textarea name="saran" class="form-control" rows="3" placeholder="Tuliskan masukan untuk kemajuan web sekolah..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill w-100 fw-semibold py-2">Kirim Penilaian Website</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     </section>
 
     @include('partials.footer')
